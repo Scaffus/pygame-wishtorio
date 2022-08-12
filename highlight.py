@@ -3,7 +3,7 @@ from colors import Colors
 import utilities as utils
 
 class Highlight(pygame.sprite.Sprite):
-    def __init__(self, game) -> None:
+    def __init__(self, game) :
         self.GAME = game
         self.highlight_size_ratio = (self.GAME.GRID_SIZE / 2) - self.GAME.GRID_SIZE / 8
         self.highlight_surf = pygame.transform.scale(pygame.image.load("./assets/highlight.png").convert_alpha(), (self.GAME.GRID_SIZE + self.highlight_size_ratio, self.GAME.GRID_SIZE + self.highlight_size_ratio))

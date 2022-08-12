@@ -3,7 +3,7 @@ from colors import Colors
 import utilities as utils
 
 class Cursor(pygame.sprite.Sprite):
-    def __init__(self, game) -> None:
+    def __init__(self, game) :
         self.GAME = game
         self.cursor = pygame.image.load('./assets/hud/cursor.cur').convert_alpha()
 

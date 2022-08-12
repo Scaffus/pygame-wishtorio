@@ -1,10 +1,10 @@
 import pygame
 from colors import Colors
-from tile import Generator
+from tile import GeneratorTile, InventoryTile
 import utilities as utils
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, game) -> None:
+    def __init__(self, game) :
         self.GAME = game
         self.surface = pygame.surface.Surface((self.GAME.GRID_SIZE, self.GAME.GRID_SIZE))
         self.surface.fill(Colors.player)
@@ -24,15 +24,23 @@ class Player(pygame.sprite.Sprite):
         if self.body: self.GAME.DISPLAY.blit(self.surface, self.pos)
 
     def update(self):
-        mpos = self.GAME.HOVERED_TILE_POS
+        tile_pos = self.GAME.HOVERED_TILE_POS
         
         if pygame.mouse.get_pressed()[0] == 1:
-            if mpos not in self.GAME.MAP.tiles:
-                if self.GAME.HUD.HOTBAR.slots[self.GAME.HUD.HOTBAR.selected_slot].type == 1:
-                    self.GAME.MAP.tiles[mpos] = Generator(self.GAME, mpos) 
+            if tile_pos not in self.GAME.MAP.tiles:
+                mat_tile = self.GAME.HUD.HOTBAR.slots[self.GAME.HUD.HOTBAR.selected_slot]
+                match mat_tile.TYPE:
+                    case 1: 
+                        self.GAME.MAP.tiles[tile_pos] = GeneratorTile(self.GAME, mat_tile, tile_pos)
+                    case 2:
+                        self.GAME.MAP.tiles[tile_pos] = InventoryTile(self.GAME, mat_tile, tile_pos)
+                        match mat_tile.NAME:
+                            case 'accumulator':
+                                self.GAME.ENERGY_CAPACITY += self.GAME.MATERIALS['wishtorio:accumulator'].storage_capacity
+
         if pygame.mouse.get_pressed()[2] == 1:
-            if mpos in self.GAME.MAP.tiles:
-                self.GAME.MAP.tiles.pop(mpos)
+            if tile_pos in self.GAME.MAP.tiles:
+                self.GAME.MAP.tiles.pop(tile_pos)
         
         if self.body: self.move()
         

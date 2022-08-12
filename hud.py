@@ -4,7 +4,7 @@ import utilities as utils
 import statistics
 
 class Hud(pygame.sprite.Sprite):
-    def __init__(self, game) -> None:
+    def __init__(self, game) :
         self.GAME = game
         self.surface = pygame.surface.Surface(self.GAME.SIZE)
         self.surface.set_colorkey(Colors.black)
@@ -50,17 +50,19 @@ class Hud(pygame.sprite.Sprite):
         self.surface.blit(utils.font(f" FPS: {self.avrg_fps} ", anti_alias=True, color=Colors.white, background=True), (0, 0))
         # ? Ms per frame
         self.surface.blit(utils.font(f" MS: {'%.1f' % self.avrg_ms} ", anti_alias=True, color=self.ms_color, background=True), (0, 36))
-        # ? Iron count
-        self.surface.blit(utils.font(f" IRON: {self.GAME.RESOURCES['iron_ore']} ", anti_alias=True, color=Colors.white, background=True), (0, 72))
+        # ? Energy count
+        self.surface.blit(utils.font(f" ENERGY PRODUCTION: {self.GAME.ENERGY} ", anti_alias=True, color=Colors.white, background=True), (0, 72))
+        # ? Energy capacity
+        self.surface.blit(utils.font(f" ENERGY CAPACITY: {self.GAME.ENERGY_CAPACITY} ", anti_alias=True, color=Colors.white, background=True), (0, 108))
         # ? Update tiles count
-        self.surface.blit(utils.font(f" UPDATE TILES: {len(self.GAME.MAP.tiles)} ", anti_alias=True, color=Colors.white, background=True), (0, 108))
+        self.surface.blit(utils.font(f" UPDATE TILES: {len(self.GAME.MAP.tiles)} ", anti_alias=True, color=Colors.white, background=True), (0, 140))
         
         self.HOTBAR.draw()
 
         self.GAME.DISPLAY.blit(self.surface, (0, 0))
 
 class Hotbar(pygame.sprite.Sprite):
-    def __init__(self, hud) -> None:
+    def __init__(self, hud) :
         self.HUD = hud
         
         self.slot_number = 9
@@ -86,6 +88,7 @@ class Hotbar(pygame.sprite.Sprite):
             hotbar.blit(self.slot_surf, (i * self.slot_size, 0))
             self.slots[i] = None
         self.slots[0] = self.HUD.GAME.MATERIALS['wishtorio:reactor']
+        self.slots[1] = self.HUD.GAME.MATERIALS['wishtorio:accumulator']
 
         return hotbar
 

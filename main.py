@@ -7,16 +7,16 @@ from cursor import Cursor
 from highlight import Highlight
 from hud import Hud
 from map import Map
-from materials import Material, load_tiles
+from tile import load_materials
 from player import Player
 
 
 class App:
     pygame.init()
 
-    def __init__(self, grid_size: int, window_size: tuple = (1280, 720)) -> None:
+    def __init__(self, grid_size: int, window_size: tuple = (1280, 720)) :
         self.SIZE = self.WIDTH, self.HEIGHT = window_size
-        self.WIN = pygame.display.set_mode(window_size)
+        self.WIN = pygame.display.set_mode(window_size, pygame.FULLSCREEN)
         self.DISPLAY = pygame.surface.Surface(self.SIZE)
         self.CLOCK = pygame.time.Clock()
 
@@ -30,7 +30,7 @@ class App:
         self.delta_time = None
         self.now = 0
 
-        self.MATERIALS = load_tiles(self)
+        self.MATERIALS = load_materials(self)
 
         self.CURSOR = Cursor(self)
         self.HIGHLIGHT = Highlight(self)
@@ -43,6 +43,7 @@ class App:
             'copper_ore': 0,
         }
         self.ENERGY = 0
+        self.ENERGY_CAPACITY = 50
 
         pygame.mouse.set_visible(False)
         pygame.display.set_icon(pygame.image.load("./assets/icon.png").convert_alpha())
@@ -112,7 +113,7 @@ class App:
         self.CLOCK.tick()
 
     def run(self):
-        # self.PLAYER.body = False
+        self.PLAYER.body = False
         while self.RUN:
             self.now = time.time()
             self.delta_time = self.now - self.prev_time

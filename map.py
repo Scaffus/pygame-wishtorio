@@ -1,11 +1,9 @@
-from random import random
 import pygame
 from colors import Colors
-from tile import Tile
 from random import randint
 
 class Map(pygame.sprite.Sprite):
-    def __init__(self, game) -> None:
+    def __init__(self, game) :
         self.GAME = game
         self.floor = pygame.surface.Surface(self.GAME.SIZE)
         self.tiles = {}
@@ -29,12 +27,13 @@ class Map(pygame.sprite.Sprite):
             pygame.draw.line(self.grid, (Colors.gray), (x * self.GAME.GRID_SIZE - .5, 0), (x * self.GAME.GRID_SIZE - .5, self.GAME.HEIGHT), 2)
 
     def create_floor(self):
-        nbr_of_stone_tile = 16
-        stone_path = pygame.transform.scale(pygame.image.load("./assets/materials/stone_path.png").convert(), (self.GAME.GRID_SIZE * nbr_of_stone_tile, self.GAME.GRID_SIZE))
+        mat_stone_path = self.GAME.MATERIALS['wishtorio:stone_path']
+        nbr_of_stone_tile = mat_stone_path.SIZE[0]
+        stone_path = mat_stone_path.sprite_grid_sized
         for y in range(round(self.GAME.HEIGHT / self.GAME.GRID_SIZE) + 1):
             for x in range(round(self.GAME.WIDTH / self.GAME.GRID_SIZE) + 1):
                 pos = (x * self.GAME.GRID_SIZE, y * self.GAME.GRID_SIZE)
-                grab_rect = pygame.Rect(randint(0, 15) * self.GAME.GRID_SIZE, 0, self.GAME.GRID_SIZE, self.GAME.GRID_SIZE)
+                grab_rect = pygame.Rect(randint(0, nbr_of_stone_tile-1) * self.GAME.GRID_SIZE, 0, self.GAME.GRID_SIZE, self.GAME.GRID_SIZE)
                 tile = stone_path.subsurface(grab_rect)
                 self.floor.blit(tile, pos)
 

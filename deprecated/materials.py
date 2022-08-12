@@ -15,7 +15,7 @@ def load_tiles(game):
     return tiles
 
 class Material:
-    def __init__(self, game, name, type, size) -> None:
+    def __init__(self, game, name, type, size) :
         self.GAME = game
         self.NAME = name
         self.SIZE = size
