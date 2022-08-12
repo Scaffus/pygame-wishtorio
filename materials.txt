@@ -1,0 +1,1 @@
+['wishtorio:stone', 'wishtorio:coal', 'wishtorio:copper', 'wishtorio:iron', 'wishtorio:iron', 'wishtorio:iron_plate', 'wishtorio:copper_plate', 'wishtorio:air', 'wishtorio:generator', 'wishtorio:iron_ore', 'wishtorio:copper_ore', 'wishtorio:reactor', 'wishtorio:energy', 'wishtorio:accumulator']
