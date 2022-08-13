@@ -14,9 +14,10 @@ from player import Player
 class App:
     pygame.init()
 
-    def __init__(self, grid_size: int, window_size: tuple = (1280, 720)) :
+    def __init__(self, grid_size: int, window_size: tuple = (1920, 1080)) :
         self.SIZE = self.WIDTH, self.HEIGHT = window_size
-        self.WIN = pygame.display.set_mode(window_size, pygame.FULLSCREEN)
+        # self.WIN = pygame.display.set_mode(window_size, pygame.FULLSCREEN)
+        self.WIN = pygame.display.set_mode(window_size)
         self.DISPLAY = pygame.surface.Surface(self.SIZE)
         self.CLOCK = pygame.time.Clock()
 
@@ -24,6 +25,10 @@ class App:
 
         self.GRID_SIZE = grid_size
         self.SLOT_SIZE = 64
+
+        self.CHUNK_SIZE = 8
+        self.RENDER_DISTANCE = 1
+
         self.PREFIX  = 'wishtorio:'
 
         self.prev_time = time.time()
@@ -113,7 +118,7 @@ class App:
         self.CLOCK.tick()
 
     def run(self):
-        self.PLAYER.body = False
+        self.PLAYER.body = True
         while self.RUN:
             self.now = time.time()
             self.delta_time = self.now - self.prev_time
@@ -124,5 +129,5 @@ class App:
             self.draw()
 
 if __name__ == '__main__':
-    app = App(32)
+    app = App(48)
     app.run()

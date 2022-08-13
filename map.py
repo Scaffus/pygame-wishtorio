@@ -1,12 +1,17 @@
 import pygame
 from colors import Colors
+from tile import PlaceholderTile
 from random import randint
+import utilities as utils
 
 class Map(pygame.sprite.Sprite):
     def __init__(self, game) :
         self.GAME = game
         self.floor = pygame.surface.Surface(self.GAME.SIZE)
+        self.floor_tiles = {}
+        self.chunks = {}
         self.tiles = {}
+        self.tile_pos = []
 
         self.grid = pygame.surface.Surface(self.GAME.SIZE)
         self.grid.set_colorkey((0, 0, 0))
@@ -18,7 +23,7 @@ class Map(pygame.sprite.Sprite):
         self.create_floor()
 
         self.upd_ = 0
-        self.upd_f = 1
+        self.upd_f = 2
 
     def create_grid(self):
         for y in range(round(self.GAME.HEIGHT / self.GAME.GRID_SIZE) + 1):
@@ -35,14 +40,31 @@ class Map(pygame.sprite.Sprite):
                 pos = (x * self.GAME.GRID_SIZE, y * self.GAME.GRID_SIZE)
                 grab_rect = pygame.Rect(randint(0, nbr_of_stone_tile-1) * self.GAME.GRID_SIZE, 0, self.GAME.GRID_SIZE, self.GAME.GRID_SIZE)
                 tile = stone_path.subsurface(grab_rect)
-                self.floor.blit(tile, pos)
-
+                self.floor_tiles[pos] = tile
+                self.tile_pos.append(pos)
+                
     def draw(self):
         self.GAME.DISPLAY.blit(self.floor, (0, 0))
 
         if self.upd_ > self.upd_f:
             self.map.fill(Colors.black)
-            [self.tiles[pos].draw() for pos in self.tiles]
+            self.GAME.PLAYER.CURRENT_CHUNK = (utils.round_to_multiple(self.GAME.PLAYER.POS[0], self.GAME.CHUNK_SIZE), utils.round_to_multiple(self.GAME.PLAYER.POS[1], self.GAME.CHUNK_SIZE))
+            # i_s = list(self.tiles.keys()).index(self.GAME.PLAYER.CURRENT_CHUNK)
+            # i_f = list(self.tiles.keys()).index((
+            #     self.GAME.PLAYER.CURRENT_CHUNK[0] + self.GAME.CHUNK_SIZE * self.GAME.GRID_SIZE,
+            #     self.GAME.PLAYER.CURRENT_CHUNK[1] + self.GAME.CHUNK_SIZE * self.GAME.GRID_SIZE))
+            start_pos = self.GAME.PLAYER.CURRENT_CHUNK
+            end_pos = (self.GAME.PLAYER.CURRENT_CHUNK[0] + (self.GAME.GRID_SIZE * self.GAME.CHUNK_SIZE),
+                            self.GAME.PLAYER.CURRENT_CHUNK[1] + (self.GAME.GRID_SIZE * self.GAME.CHUNK_SIZE))
+            
+            start_index = self.tile_pos.index(start_pos)
+            end_index = self.tile_pos.index(end_pos)
+            
+            tiles_pos = self.tile_pos[start_index:end_index]
+            for pos in tiles_pos:
+                self.floor_tiles[pos].blit(self.GAME.DISPLAY, pos)
+                
+            # [self.tiles[pos].draw() for pos in self.tiles]
             self.upd_ = 0
         else: self.upd_ += 1
 
