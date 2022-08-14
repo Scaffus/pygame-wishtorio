@@ -27,17 +27,21 @@ class Material:
         self.sprite_slot_sized = pygame.transform.scale(self.sprite.copy(), (self.GAME.SLOT_SIZE, self.GAME.SLOT_SIZE))
         self.sprite_grid_sized = pygame.transform.scale(self.sprite.copy(), (self.GAME.GRID_SIZE * self.SIZE[0], self.GAME.GRID_SIZE * self.SIZE[1]))
     
+class PlaceholderTile:
+    def update(self):
+        pass
+    
+    def draw(self):
+        pass
 
 class Tile(pygame.sprite.Sprite):
-    def __init__(self, game, material, pos=(0, 0)):
+    def __init__(self, game, material: Material, pos=(0, 0)):
         self.GAME = game
         self.MATERIAL = material
         self.POS = pos
-        self.rect = self.MATERIAL.sprite_grid_sized.get_rect()
-        self.rect.topleft = self.POS
 
     def draw(self):
-        self.GAME.MAP.map.blit(self.sprite, self.POS)
+        self.GAME.MAP.map.blit(self.MATERIAL.sprite_grid_sized, self.POS)
 
 class GeneratorTile(Tile):
     def __init__(self, game, material, pos):
@@ -69,3 +73,4 @@ class InventoryTile(Tile):
         self.sprite = self.MATERIAL.sprite_grid_sized
         self.storage_capacity = self.MATERIAL.TILE['storage_capacity']
         self.stored_material = self.MATERIAL.TILE['stored_material']
+    

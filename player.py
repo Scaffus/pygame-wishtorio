@@ -6,25 +6,34 @@ import utilities as utils
 class Player(pygame.sprite.Sprite):
     def __init__(self, game) :
         self.GAME = game
-        self.surface = pygame.surface.Surface((self.GAME.GRID_SIZE, self.GAME.GRID_SIZE))
-        self.surface.fill(Colors.player)
+        self.sprite = pygame.surface.Surface((self.GAME.GRID_SIZE, self.GAME.GRID_SIZE))
+        self.sprite.fill(Colors.player)
         self.body = True
+
+        self.CURRENT_CHUNK = (0, 0)
+        self.POS = (0, 0)
 
         self.left_p = False
         self.right_p = False
         self.up_p = False
         self.down_p = False
 
-        self.pos = (0, 0)
 
         self.velx = 0
         self.vely = 0
+        
 
     def draw(self):
-        if self.body: self.GAME.DISPLAY.blit(self.surface, self.pos)
+        if self.body: self.GAME.DISPLAY.blit(self.sprite, self.POS)
 
     def update(self):
         tile_pos = self.GAME.HOVERED_TILE_POS
+        
+        self.CURRENT_CHUNK = (utils.round_to_multiple(self.POS[0], (self.GAME.CHUNK_SIZE - 1) * self.GAME.GRID_SIZE),
+                              utils.round_to_multiple(self.POS[1], (self.GAME.CHUNK_SIZE - 1) * self.GAME.GRID_SIZE))
+        
+        # if self.CURRENT_CHUNK not in self.GAME.MAP.CHUNKS:
+        #     self.GAME.MAP.CHUNKS[self.CURRENT_CHUNK] = self.GAME.MAP.generate_chunk(self.CURRENT_CHUNK)
         
         if pygame.mouse.get_pressed()[0] == 1:
             if tile_pos not in self.GAME.MAP.tiles:
@@ -63,7 +72,7 @@ class Player(pygame.sprite.Sprite):
         if self.down_p:
             self.vely += 1
 
-        self.pos = (self.pos[0] + self.velx * self.GAME.GRID_SIZE,
-                    self.pos[1] + self.vely * self.GAME.GRID_SIZE)
+        self.POS = (self.POS[0] + self.velx * self.GAME.GRID_SIZE,
+                    self.POS[1] + self.vely * self.GAME.GRID_SIZE)
 
         self.reset_keys()
