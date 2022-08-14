@@ -35,15 +35,13 @@ class PlaceholderTile:
         pass
 
 class Tile(pygame.sprite.Sprite):
-    def __init__(self, game, material, pos=(0, 0)):
+    def __init__(self, game, material: Material, pos=(0, 0)):
         self.GAME = game
         self.MATERIAL = material
         self.POS = pos
-        self.rect = self.MATERIAL.sprite_grid_sized.get_rect()
-        self.rect.topleft = self.POS
 
     def draw(self):
-        self.GAME.MAP.map.blit(self.sprite, self.POS)
+        self.GAME.MAP.map.blit(self.MATERIAL.sprite_grid_sized, self.POS)
 
 class GeneratorTile(Tile):
     def __init__(self, game, material, pos):

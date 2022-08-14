@@ -29,6 +29,12 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         tile_pos = self.GAME.HOVERED_TILE_POS
         
+        self.CURRENT_CHUNK = (utils.round_to_multiple(self.POS[0], (self.GAME.CHUNK_SIZE - 1) * self.GAME.GRID_SIZE),
+                              utils.round_to_multiple(self.POS[1], (self.GAME.CHUNK_SIZE - 1) * self.GAME.GRID_SIZE))
+        
+        # if self.CURRENT_CHUNK not in self.GAME.MAP.CHUNKS:
+        #     self.GAME.MAP.CHUNKS[self.CURRENT_CHUNK] = self.GAME.MAP.generate_chunk(self.CURRENT_CHUNK)
+        
         if pygame.mouse.get_pressed()[0] == 1:
             if tile_pos not in self.GAME.MAP.tiles:
                 mat_tile = self.GAME.HUD.HOTBAR.slots[self.GAME.HUD.HOTBAR.selected_slot]

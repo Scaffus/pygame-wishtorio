@@ -58,8 +58,8 @@ class App:
 
     def update(self):
         self.PLAYER.update()
-        self.HIGHLIGHT.update()
         self.MAP.update()
+        self.HIGHLIGHT.update()
         self.HUD.update()
 
     def event_handler(self):

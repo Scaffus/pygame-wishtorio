@@ -56,6 +56,8 @@ class Hud(pygame.sprite.Sprite):
         self.surface.blit(utils.font(f" ENERGY CAPACITY: {self.GAME.ENERGY_CAPACITY} ", anti_alias=True, color=Colors.white, background=True), (0, 108))
         # ? Update tiles count
         self.surface.blit(utils.font(f" UPDATE TILES: {len(self.GAME.MAP.tiles)} ", anti_alias=True, color=Colors.white, background=True), (0, 140))
+        # ? Current chunk
+        self.surface.blit(utils.font(f" CHUNK: {self.GAME.PLAYER.CURRENT_CHUNK} ", anti_alias=True, color=Colors.white, background=True), (0, 176))
         
         self.HOTBAR.draw()
 
